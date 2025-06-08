@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Scientist Learning Roadmap - Animated Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent1: #38bdf8;
+            --accent2: #818cf8;
+            --accent3: #e879f9;
+            --accent4: #fb7185;
+        }
+
+        body {
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        #bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .roadmap-container {
+            position: relative;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: auto;
+            z-index: 1;
+        }
+        
+        /* The vertical line */
+        .roadmap-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent1), var(--accent2), var(--accent3), var(--accent4));
+            border-radius: 2px;
+            opacity: 0.3;
+        }
+
+        .roadmap-step {
+            position: relative;
+            margin-bottom: 5rem;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .roadmap-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-content {
+            position: relative;
+            width: calc(50% - 2.5rem);
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .step-content:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 40px -10px var(--border-color);
+        }
+
+        .roadmap-step:nth-child(odd) .step-content { float: left; margin-left: 2.5rem; --border-color: var(--accent1); border-color: var(--accent1); }
+        .roadmap-step:nth-child(even) .step-content { float: right; margin-right: 2.5rem; --border-color: var(--accent2); border-color: var(--accent2); }
+        .roadmap-step:nth-child(3) .step-content { --border-color: var(--accent3); border-color: var(--accent3); }
+        .roadmap-step:nth-child(4) .step-content { --border-color: var(--accent4); border-color: var(--accent4); }
+
+        .roadmap-step::after { content: ''; display: table; clear: both; }
+
+        .step-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: var(--bg-color);
+            border: 4px solid;
+            border-radius: 50%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 0 8px var(--bg-color), 0 0 20px var(--border-color);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 8px var(--bg-color), 0 0 20px var(--border-color); }
+            50% { box-shadow: 0 0 0 8px var(--bg-color), 0 0 35px var(--border-color); }
+            100% { box-shadow: 0 0 0 8px var(--bg-color), 0 0 20px var(--border-color); }
+        }
+
+        .roadmap-step:nth-child(odd) .step-icon { --border-color: var(--accent1); border-color: var(--accent1); color: var(--accent1); }
+        .roadmap-step:nth-child(even) .step-icon { --border-color: var(--accent2); border-color: var(--accent2); color: var(--accent2); }
+        .roadmap-step:nth-child(3) .step-icon { --border-color: var(--accent3); border-color: var(--accent3); color: var(--accent3); }
+        .roadmap-step:nth-child(4) .step-icon { --border-color: var(--accent4); border-color: var(--accent4); color: var(--accent4); }
+
+        .step-title-bn { font-family: 'Hind Siliguri', sans-serif; font-weight: 700; font-size: 1.6rem; color: #fff; }
+        .step-title-en { font-weight: 600; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .step-duration { font-style: italic; color: var(--text-muted); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; }
+        .tech-item { text-align: center; font-size: 0.8rem; color: var(--text-muted); transition: transform 0.3s, color 0.3s; animation: popIn 0.5s ease-out forwards; opacity: 0; }
+        .tech-item:hover { transform: scale(1.15); color: #fff; }
+        .tech-icon { font-size: 2.5rem; margin-bottom: 0.5rem; transition: filter 0.3s; }
+        .tech-item:hover .tech-icon { filter: drop-shadow(0 0 10px var(--icon-color));}
+
+        /* Staggered animation for tech items */
+        .visible .tech-item {
+            animation-delay: calc(0.3s + var(--i) * 0.08s);
+        }
+        
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .icon-html { --icon-color: #e34f26; color: #e34f26; }
+        .icon-css { --icon-color: #1572b6; color: #1572b6; }
+        .icon-js { --icon-color: #f7df1e; color: #f7df1e; }
+        .icon-php { --icon-color: #777bb4; color: #777bb4; }
+        .icon-wordpress { --icon-color: #21759b; color: #21759b; }
+        .icon-eng { --icon-color: #0284c7; color: #0284c7; }
+        .icon-math { --icon-color: #f97316; color: #f97316; }
+        .icon-cplusplus { --icon-color: #00599c; color: #00599c; }
+        .icon-dsa { --icon-color: #fb923c; color: #fb923c; }
+        .icon-react { --icon-color: #61dafb; color: #61dafb; }
+        .icon-node { --icon-color: #339933; color: #339933; }
+        .icon-typescript { --icon-color: #3178c6; color: #3178c6; }
+        .icon-figma { --icon-color: #f24e1e; color: #f24e1e; }
+        .icon-python { --icon-color: #3776ab; color: #3776ab; }
+        .icon-django { --icon-color: #092e20; color: #092e20; }
+        .icon-prompt { --icon-color: #a78bfa; color: #a78bfa; }
+        .icon-data { --icon-color: #fb7185; color: #fb7185; }
+        .icon-sql { --icon-color: #4479a1; color: #4479a1; }
+        .icon-powerbi { --icon-color: #f2c811; color: #f2c811; }
+        .icon-aws { --icon-color: #ff9900; color: #ff9900; }
+        .icon-tensor { --icon-color: #ff6f00; color: #ff6f00; }
+
+        .bonus-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s, transform 1s;
+        }
+        .bonus-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bonus-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            background: -webkit-linear-gradient(45deg, var(--accent1), var(--accent4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .roadmap-container::before { left: 30px; transform: translateX(0); }
+            .step-content { width: calc(100% - 4.5rem); float: right; margin-left: 0; }
+            .roadmap-step:nth-child(odd) .step-content,
+            .roadmap-step:nth-child(even) .step-content { float: right; margin-left: 0; margin-right: 0; }
+            .step-icon { left: 30px; transform: translate(-50%, -50%); }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-animation"></canvas>
+
+    <div class="roadmap-container">
+        
+        <div class="text-center mb-24">
+            <h1 class="text-5xl md:text-6xl font-bold text-white" style="font-family: 'Hind Siliguri', sans-serif;">দক্ষ ডেটা সায়েন্টিস্ট হওয়ার রোডম্যাপ</h1>
+            <p class="text-xl text-slate-400 mt-4">Your Animated Journey to Becoming a Data Scientist</p>
+            <a href="<contentFetchId:uploaded:দক্ষ ডেটা সায়েন্টিস্ট হওয়ার পূর্ণাঙ্গ শেখার রোডম্যাপ.pdf>" 
+               target="_blank" 
+               class="mt-8 inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105 shadow-lg shadow-sky-500/30">
+                <i class="fas fa-file-pdf mr-2"></i> View Original PDF
+            </a>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="roadmap-step">
+            <div class="step-icon"><i class="fas fa-rocket"></i></div>
+            <div class="step-content">
+                <h2 class="step-title-bn">ধাপ ১: ওয়েব ডেভেলপমেন্ট বেসিকস</h2>
+                <h3 class="step-title-en">Step 1: Web Development Basics</h3>
+                <p class="step-duration"><i class="far fa-clock"></i> প্রাথমিক পর্যায়: প্রথম ৮ মাস (দৈনিক ১-৩ ঘণ্টা)</p>
+                <div class="tech-grid">
+                    <div class="tech-item" style="--i:1"><i class="fab fa-html5 tech-icon icon-html"></i>HTML</div>
+                    <div class="tech-item" style="--i:2"><i class="fab fa-css3-alt tech-icon icon-css"></i>CSS</div>
+                    <div class="tech-item" style="--i:3"><i class="fab fa-js-square tech-icon icon-js"></i>JavaScript</div>
+                    <div class="tech-item" style="--i:4"><i class="fab fa-php tech-icon icon-php"></i>PHP</div>
+                    <div class="tech-item" style="--i:5"><i class="fab fa-wordpress tech-icon icon-wordpress"></i>WordPress</div>
+                    <div class="tech-item" style="--i:6"><i class="fas fa-language tech-icon icon-eng"></i>English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="roadmap-step">
+            <div class="step-icon"><i class="fas fa-atom"></i></div>
+            <div class="step-content">
+                 <h2 class="step-title-bn">ধাপ ২: সিএস কোর ও MERN স্ট্যাক</h2>
+                 <h3 class="step-title-en">Step 2: CS Core & MERN Stack</h3>
+                <p class="step-duration"><i class="far fa-clock"></i> পূর্ণকালীন অধ্যয়ন (দৈনিক ৯ ঘণ্টা)</p>
+                 <div class="tech-grid">
+                    <div class="tech-item" style="--i:1"><i class="fas fa-calculator tech-icon icon-math"></i>Math</div>
+                    <div class="tech-item" style="--i:2"><i class="fab fa-cuttlefish tech-icon icon-cplusplus"></i>C/C++</div>
+                    <div class="tech-item" style="--i:3"><i class="fas fa-sitemap tech-icon icon-dsa"></i>DSA</div>
+                    <div class="tech-item" style="--i:4"><i class="fab fa-react tech-icon icon-react"></i>MERN Stack</div>
+                    <div class="tech-item" style="--i:5"><i class="fas fa-code tech-icon icon-typescript"></i>TypeScript</div>
+                    <div class="tech-item" style="--i:6"><i class="fab fa-node-js tech-icon icon-node"></i>Next.js</div>
+                    <div class="tech-item" style="--i:7"><i class="fab fa-figma tech-icon icon-figma"></i>Figma</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="roadmap-step">
+            <div class="step-icon"><i class="fab fa-python"></i></div>
+            <div class="step-content">
+                 <h2 class="step-title-bn">ধাপ ৩: পাইথন ও Django</h2>
+                 <h3 class="step-title-en">Step 3: Python, Django & Prompt Engineering</h3>
+                <p class="step-duration"><i class="far fa-clock"></i> পূর্ণকালীন অধ্যয়ন (দৈনিক ৯ ঘণ্টা)</p>
+                 <div class="tech-grid">
+                    <div class="tech-item" style="--i:1"><i class="fab fa-python tech-icon icon-python"></i>Python</div>
+                    <div class="tech-item" style="--i:2"><i class="fas fa-leaf tech-icon icon-django"></i>Django</div>
+                    <div class="tech-item" style="--i:3"><i class="fas fa-lightbulb tech-icon icon-prompt"></i>Prompt Eng.</div>
+                </div>
+                 <p class="mt-4 text-sm text-slate-400">Also start learning data visualization with Matplotlib and Seaborn as a foundation for the next step.</p>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="roadmap-step">
+            <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="step-content">
+                 <h2 class="step-title-bn">ধাপ ৪: ডেটা সায়েন্স ও অ্যানালিটিক্স</h2>
+                 <h3 class="step-title-en">Step 4: Data Science & Analytics</h3>
+                <p class="step-duration"><i class="far fa-clock"></i> পূর্ণকালীন অধ্যয়ন (দৈনিক ৯ ঘণ্টা)</p>
+                 <div class="tech-grid">
+                    <div class="tech-item" style="--i:1"><i class="fas fa-database tech-icon icon-data"></i>NumPy/Pandas</div>
+                    <div class="tech-item" style="--i:2"><i class="fas fa-brain tech-icon icon-tensor"></i>TensorFlow</div>
+                    <div class="tech-item" style="--i:3"><i class="fas fa-table tech-icon icon-sql"></i>SQL</div>
+                    <div class="tech-item" style="--i:4"><i class="fab fa-aws tech-icon icon-aws"></i>Cloud (AWS)</div>
+                    <div class="tech-item" style="--i:5"><i class="fas fa-chart-bar tech-icon icon-powerbi"></i>Power BI</div>
+                </div>
+                 <p class="mt-4 text-sm text-slate-400">Focus on Data Cleaning, EDA, Modeling, and Visualization. Participate in Kaggle competitions.</p>
+            </div>
+        </div>
+
+        <!-- Bonus Section -->
+        <div class="roadmap-step bonus-section">
+             <i class="fas fa-trophy bonus-icon"></i>
+             <h2 class="text-3xl font-bold text-white mb-4">You've Reached the Summit!</h2>
+             <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-6">This roadmap is your guide, but the journey is yours to own. Stay curious, build projects, and never stop learning.</p>
+             <blockquote class="text-xl italic text-white border-l-4 border-accent4 pl-6">
+                "Without data, you're just another person with an opinion."
+                <cite class="block not-italic text-base text-slate-400 mt-2">- W. Edwards Deming</cite>
+            </blockquote>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Background Animation ---
+        const canvas = document.getElementById('bg-animation');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        const mouse = {
+            x: null,
+            y: null,
+            radius: (canvas.height / 120) * (canvas.width / 120)
+        }
+
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+        
+        window.addEventListener('mouseout', function() {
+            mouse.x = undefined;
+            mouse.y = undefined;
+        });
+
+        window.addEventListener('resize', function(){
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            mouse.radius = (canvas.height / 120) * (canvas.width / 120);
+            init();
+        });
+
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < mouse.radius + this.size){
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                        this.x += 5;
+                    }
+                    if (mouse.x > this.x && this.x > this.size * 10) {
+                        this.x -= 5;
+                    }
+                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                        this.y += 5;
+                    }
+                    if (mouse.y > this.y && this.y > this.size * 10) {
+                        this.y -= 5;
+                    }
+                }
+
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            let colors = ['#38bdf8', '#818cf8', '#e879f9', '#fb7185', '#f0f4f8'];
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                let color = colors[Math.floor(Math.random() * colors.length)];
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0,0,innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+        }
+        
+        init();
+        animate();
+
+
+        // --- Scroll Animation ---
+        document.addEventListener('DOMContentLoaded', function () {
+            const roadmapSteps = document.querySelectorAll('.roadmap-step');
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            roadmapSteps.forEach(step => {
+                observer.observe(step);
+            });
+        });
+    </script>
+
+</body>
+</html>
